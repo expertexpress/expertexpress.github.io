@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html lang="pl">
+
+<head>
+	<meta charset="utf-8" />
+	<title>expertexpress.github.io</title>
+	<meta name="description" content="Blog o bezpieczeństwie, prywatności oraz systemach klienckich i serwerowych z rodziny Windows jak i Linux :-)" />
+	<meta name="keywords" content="Windows Serwer, Windows 10, Linux, Ubuntu, Centos, Switch, Router, RJ45, konfiguracja systemu, konfiguracja, nslookup, DNS, SMTP" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+ <link rel="stylesheet" type="text/css" href="../css/style.css" />
+ 
+</head>
+
+<body>
+  <div id="bigContainer">
+    <div id="header">   
+     <div id="menu">
+        <ul>
+        <li><a href="../index.html">Strona główna</a></li>
+        <li><a href="about.html">O mnie</a></li>
+        <li><a href="contact.html">Kontakt</a></li>
+        </ul>
+    </div>
+    </div>   
+    <div id="container">
+	
+		
+		<div id="post_newX">
+			<h3>Jak sprawdzić kto jest operatorem poczty?</h3>
+			
+			<img src="../images/e-mail.jpg" align="left" />
+			<p>
+			Czasami dochodzi do sytuacji w której musimy skonfigurować klienta poczty np. Outlook-a czy Thunderbird-a, u klienta którego nie znamy i nie mamy nikogo, kogo moglibyśmy
+			się dopytać na jakim serwerze przechowywana jest poczta i oczywiście nie mamy dostępu do komputera o analogicznej konfiguracji. Jedyną informacją jaką dysponujemy to nazwa
+			domeny <strong>SMTP (ang. Simple Mail Transfer Protocol)</strong>. Dysponując rekordem MX dla domeny SMTP jesteśmy w stanie ustalić:
+			</p>
+			<ul>
+				<li>Nazwę, numer portu, rodzaj szyfrowania serwera poczy przychodzącej (IMAP/POP3);</li>
+				<li>Nazwę, numer portu, rodzaj szyfrowania serwera poczy wychodzącej (SMTP);</li>
+				
+			</ul> 
+			<br /><br />
+			<p>
+				Sprawdzenie dostawcy poczty jest trywialne i składa się z paru poleceń w konsoli z wykorzystaniem wbudowanego narzędzia <strong>nslookup</strong>. Polecenie nslookup jest
+				natywnie dostępne w systemie Windows jak i Linux. Umożliwia  wysłanie do dowolnego wskazanego serwera <strong>DNS (ang. Domain Name System)</strong>, prośby o zwrócenie
+				wskazanego typu rekordu dla wskazanej nazwy DNS. Dzięki temu narzędziu uzyskamy informacje takie jak rekordy DNS, adres IP, nazwę domeny.
+				Przystąpmy więc do działania, za zadanie mamy skonfigurować pocztę dla nowego pracownika <a href="https://www.teatrpolski.waw.pl", target="_blank">Teatru Polskiego</a>.
+				Wchodząc na stronę internetową szybko ustalamy iż domeną SMTP jest <strong>teatrpolski.waw.pl</strong>. <br /><br />
+				<strong>1. W pierwszej kolejności uruchamiamy konsolę w systemie Windows lub terminal (Ctrl + alt + t) w systemie Linux i wpisujemy poniższe polecenie:</strong>
+					<codex>
+						nslookup 
+					</codex>
+					<code>
+						Default Server:  dc.expressexpert.local <br/>
+						Address:  172.21.121.250
+					</code>
+				<strong>2. Ustawiamy filtr w taki sposób aby zbierał tylko rekordy MX.</strong>
+					<codex>
+						set q=mx 
+					</codex>
+				// Ustawienie opcji set q=ns będzie skutkowało wyświetleniem listy wszystkich serweród DNS domeny (rekord NS) - serwerów autorytatywnych.<br /><br />
+				
+				<strong>3. Wpisujemy nazwę domeny SMTP.</strong> 
+					<codex>
+						teatrpolski.waw.pl
+					</codex>
+					<code>
+						Default Server:  dc.expressexpert.local <br/>
+						Address:  172.21.121.250 <br/>
+						Non-authoritative answer: <br/>
+						teatrpolski.waw.pl      MX preference = 10, mail exchanger = teatrpolski.waw.pl <br/>
+						teatrpolski.waw.pl      internet address = 89.161.255.165
+					</code>
+				W tym przypadku rekord mx wskazuje na <strong> 89.161.255.165 (teatrpolski.waw.pl)</strong> . Często już w powyższej linijce uzyskamy odpowiedź. Jeśli w parametrze
+				mail exchanger uzyskamy domenę <strong> mail.protection.outlook.com </strong> oznacza iż poczta przechowywana jest w office365. Natomiast <strong>
+				aspmx.google.com</strong> wskazuje na Google Workspace. Czasami uzyskamy domenę SMTP np. <strong> mimecast.com</strong>, w tym przypadku mamy doczynienia z "Secure
+				Email Gateway" czyli pośrednika który wyłapuje spam i wirusy z naszej poczy zanim trafią finalnie do skrzynki odbiorczej użytkownika. Jeśli uzykamy jedynie nazwę
+				domeny bez adresu ip może to oznaczać iż lokalnie na serwerze postawiony jest exchange lub postfix, natomiast praktyka czyni mistrza.<br /><br />
+				
+				<strong>4. Zamykamy narzędzie nslookup wciskając kombinację klawiszy Ctrl + c i wykonujemy polecenie ping z parametrem "a" i adres ip.</strong> 
+					<codex>
+						ping -a 89.161.255.165
+					</codex>
+					<code>
+						Pinging cloudserver2082711.home.pl [89.161.255.165] with 32 bytes of data:<br/>
+						Reply from 89.161.255.165: bytes=32 time=29ms TTL=57<br/>
+						Reply from 89.161.255.165: bytes=32 time=29ms TTL=57<br/>
+						Reply from 89.161.255.165: bytes=32 time=37ms TTL=57<br/>
+						Reply from 89.161.255.165: bytes=32 time=41ms TTL=57<br/><br/>
+
+						Ping statistics for 89.161.255.165:<br/>
+    					Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),<br/>
+						Approximate round trip times in milli-seconds:<br/>
+    					Minimum = 29ms, Maximum = 41ms, Average = 34ms
+					</code>
+				Naszym serwerem jest <strong>cloudserver2082711.home.pl</strong>. Dalszą konfigurację poczty znajdziemy na stronie dostawcy usług pocztowych <strong> home.pl</strong>.
+				<br /><br />
+				<strong>UWAGA !!! W systemie Linux wykonujemy polecenie:</strong>
+					<codex>nslookup 89.161.255.165</codex>
+				zamiast:
+					<codex> ping -a 89.161.255.165</codex>
+				Oczywiście powyższe polecenie z powodzeniem wykonamy również w systemie z rodziny Windows.
+			</p>			
+		</div>
+		<!-- ********* -->
+
+    </div>
+    <div id="footer">
+        <p>expressexpert blog IT &copy; Wszelkie prawa zastrzeżone.</p>
+    </div>
+    </div>
+</body>
+</html>

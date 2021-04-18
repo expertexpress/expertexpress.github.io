@@ -38,7 +38,25 @@
 		</div>
 		
 		<!-- ********* -->
-		
+		<div id="post_new">
+			<h3><a href="article/dostawca_poczty.html">Jak sprawdzić kto jest operatorem poczty?</a></h3>
+			
+			<img src="images/e-mail.jpg" align="left" />
+			<p>
+			Czasami dochodzi do sytuacji w której musimy skonfigurować klienta poczty np. Outlook-a czy Thunderbird-a, u klienta którego nie znamy i nie mamy nikogo, kogo moglibyśmy
+			podpytać na jakim serwerze przechowywana jest poczta i oczywiście nie mamy dostępu do komputera o analogicznej konfiguracji. Jedyną informacją jaką dysponujemy to nazwa
+			domeny <strong>SMTP (ang. Simple Mail Transfer Protocol)</strong>. Dysponując rekordem MX dla domeny SMTP jesteśmy w stanie ustalić:
+			</p>
+			<ul>
+				<li>Nazwę, numer portu, rodzaj szyfrowania serwera poczy przychodzącej (IMAP/POP3);</li>
+				<li>Nazwę, numer portu, rodzaj szyfrowania serwera poczy wychodzącej (SMTP);</li>
+				
+			</ul> 
+			
+			<p>
+			Sprawdzenie dostawcy poczty jest stosunkowo proste i składa się z paru poleceń w konsoli z wykorzystaniem wbudowanego narzędzia <strong>nslookup</strong>. Polecenie nslookup 				jest natywnie dostępne w systemie Windows jak i Linux. Umożliwia  wysłanie do dowolnego wskazanego serwera <strong>DNS (ang. Domain Name System)</strong>, prośby o zwrócenie 				wskazanego typu rekordu dla wskazanej nazwy DNS. Dzięki temu narzędziu uzyskamy informacje takie jak rekordy DNS, adres IP, nazwę domeny. Zapraszam do lektury.... 
+			</p>
+		</div>
     </div>
     <div id="footer">
         <p>expressexpert blog IT &copy; Wszelkie prawa zastrzeżone.</p>
