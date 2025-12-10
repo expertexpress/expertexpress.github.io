@@ -1,7 +1,7 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 16px;
-	color: #555;
+	color: #999;
 	background: url(../images/background.jpg) repeat;
 	text-align: center;
 	margin: 0;
@@ -170,7 +170,7 @@ h2 {
 #footer a {
 	color: #afa659;
 }
-    
+
 codex {
     display: block;
     padding: 9.5px;
@@ -189,6 +189,7 @@ codex {
   	margin-top: 20px;
   	margin-bottom: 20px; 
     }
+
 code {
     display: block;
     padding: 9.5px;
@@ -206,4 +207,36 @@ code {
   	margin-top: 20px;
   	margin-bottom: 20px; 
     }
-    
+
+codeComment {
+	display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: white;
+    word-wrap: break-word;
+	word-break: keep-all;
+    background-color: #777;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 10px;
+  	margin-right: 300px;
+  	margin-top: 20px;
+  	margin-bottom: 20px;
+    }
+table {
+		width: 100%;
+		border-collapse: collapse;
+		border: 2px solid black;
+	}
+	th, td {
+		border: 2px solid black;
+		padding: 8px;
+		text-align: center;
+		color: white;
+	}
+	th {
+		background-color: silver;
+		color: red;
+	}
